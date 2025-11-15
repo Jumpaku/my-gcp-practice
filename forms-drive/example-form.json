@@ -1,0 +1,221 @@
+{
+  "formId": "<form-id>",
+  "info": {
+    "description": "フォームの説明",
+    "documentTitle": "example form"
+  },
+  "items": [
+    {
+      "description": "タイトルと説明（説明）",
+      "itemId": "11895e05",
+      "textItem": {},
+      "title": "タイトルと説明（タイトル）"
+    },
+    {
+      "itemId": "29185202",
+      "questionItem": {
+        "question": {
+          "choiceQuestion": {
+            "options": [
+              {
+                "value": "ラジオボタンオプション 1"
+              },
+              {
+                "value": "ラジオボタ ンオプション2"
+              }
+            ],
+            "type": "RADIO"
+          },
+          "questionId": "686870b5"
+        }
+      },
+      "title": "ラジオボタン"
+    },
+    {
+      "itemId": "6be2076b",
+      "questionItem": {
+        "question": {
+          "choiceQuestion": {
+            "options": [
+              {
+                "value": "チェックボックス選択肢 1"
+              },
+              {
+                "value": "チェックボックス選択肢 2"
+              },
+              {
+                "value": "チェックボックス選択肢 3"
+              }
+            ],
+            "type": "CHECKBOX"
+          },
+          "questionId": "0034f49d"
+        }
+      },
+      "title": "チェックボックス"
+    },
+    {
+      "itemId": "4eb360cb",
+      "questionItem": {
+        "question": {
+          "choiceQuestion": {
+            "options": [
+              {
+                "value": "プルダウン選択肢 1"
+              },
+              {
+                "value": "プルダウン選択肢 2"
+              },
+              {
+                "value": "プルダウン選択肢 3"
+              }
+            ],
+            "type": "DROP_DOWN"
+          },
+          "questionId": "3a4453b0"
+        }
+      },
+      "title": "プルダウン"
+    },
+    {
+      "itemId": "7debab12",
+      "questionItem": {
+        "question": {
+          "questionId": "2447a36d",
+          "textQuestion": {}
+        }
+      },
+      "title": "テキストフィールド"
+    },
+    {
+      "itemId": "0a61e36c",
+      "questionItem": {
+        "question": {
+          "questionId": "23110228",
+          "textQuestion": {
+            "paragraph": true
+          }
+        }
+      },
+      "title": "テキストエリア"
+    },
+    {
+      "itemId": "315fe8dd",
+      "questionItem": {
+        "question": {
+          "questionId": "33959b84",
+          "scaleQuestion": {
+            "high": 5,
+            "highLabel": "均等メモリ5",
+            "low": 1,
+            "lowLabel": "均等メモリ1"
+          }
+        }
+      },
+      "title": "均等メモリ"
+    },
+    {
+      "itemId": "6f731944",
+      "questionGroupItem": {
+        "grid": {
+          "columns": {
+            "options": [
+              {
+                "value": "選択式（グリッド）列1"
+              },
+              {
+                "value": "選択式（グリッド）列2"
+              },
+              {
+                "value": "選択式（グリッド）列3"
+              }
+            ],
+            "type": "RADIO"
+          }
+        },
+        "questions": [
+          {
+            "questionId": "662756e2",
+            "rowQuestion": {
+              "title": "選択式（グリッド）1行目"
+            }
+          },
+          {
+            "questionId": "6a65609a",
+            "rowQuestion": {
+              "title": "選択式（グリッド）2行目"
+            }
+          }
+        ]
+      },
+      "title": "選択式（グリッド）"
+    },
+    {
+      "itemId": "69fcce91",
+      "questionGroupItem": {
+        "grid": {
+          "columns": {
+            "options": [
+              {
+                "value": "チェックボックス（グリッド）列1"
+              },
+              {
+                "value": "チェックボックス（グリッド）列2"
+              },
+              {
+                "value": "チェックボックス（グリッド）列3"
+              }
+            ],
+            "type": "CHECKBOX"
+          }
+        },
+        "questions": [
+          {
+            "questionId": "33a8b937",
+            "rowQuestion": {
+              "title": "チェックボックス（グリッド）1行目"
+            }
+          },
+          {
+            "questionId": "4592d884",
+            "rowQuestion": {
+              "title": "チェックボックス（グリッド）2行目"
+            }
+          }
+        ]
+      },
+      "title": "チェックボックス（グリッド）"
+    },
+    {
+      "itemId": "4f40d960",
+      "questionItem": {
+        "question": {
+          "dateQuestion": {
+            "includeYear": true
+          },
+          "questionId": "293dcfee"
+        }
+      },
+      "title": "日付"
+    },
+    {
+      "itemId": "2a4d1946",
+      "questionItem": {
+        "question": {
+          "questionId": "0fb3c1ee",
+          "timeQuestion": {}
+        }
+      },
+      "title": "時刻"
+    }
+  ],
+  "publishSettings": {
+    "publishState": {}
+  },
+  "responderUri": "https://docs.google.com/forms/d/e/1FAIpQLSelCboP6lwpIaE-u-xdlnH2Vn58WSpKmZUXydmY-SRBE1268A/viewform",
+  "revisionId": "00000001",
+  "settings": {
+    "emailCollectionType": "DO_NOT_COLLECT",
+    "quizSettings": {}
+  }
+}
