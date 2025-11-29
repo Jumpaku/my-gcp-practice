@@ -7,7 +7,7 @@
   - Enable Google Forms API in API and Services
   - Create a service account with an access key
 - Add a shared drive in Google Workspace 
-  - Add the service account as a member to the shared drive as a content manager
+  - Add the service account to the shared drive as a content manager
 
 ## Examples
 
