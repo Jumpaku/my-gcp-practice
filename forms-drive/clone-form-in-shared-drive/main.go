@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Jumpaku/go-drivefs"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/drive/v3"
 	"google.golang.org/api/forms/v1"
@@ -47,15 +48,9 @@ func main() {
 
 	var clonedFormID string
 	{
-		driveService := must(drive.NewService(ctx, option.WithHTTPClient(client)))
-		copiedFile := must(driveService.Files.
-			Copy(sourceFormID, &drive.File{
-				Name:    filename,
-				Parents: []string{destinationFolderID},
-			}).
-			SupportsAllDrives(true).
-			Do())
-		clonedFormID = copiedFile.Id
+		fs := drivefs.New(must(drive.NewService(ctx, option.WithHTTPClient(client))))
+		copiedFile := must(fs.Copy(drivefs.FileID(destinationFolderID), drivefs.FileID(sourceFormID), filename))
+		clonedFormID = string(copiedFile.ID)
 	}
 	{
 		formsService := must(forms.NewService(ctx, option.WithHTTPClient(client)))

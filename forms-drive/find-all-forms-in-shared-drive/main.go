@@ -9,6 +9,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/Jumpaku/go-drivefs"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/drive/v3"
 	"google.golang.org/api/forms/v1"
@@ -46,9 +47,10 @@ func main() {
 		forms.FormsResponsesReadonlyScope,
 	))
 
-	formFiles := map[string]*drive.File{}
+	fs := drivefs.New(must(drive.NewService(ctx, option.WithHTTPClient(client))))
+
+	formFiles := []drivefs.FileInfo{}
 	{
-		driveService := must(drive.NewService(ctx, option.WithHTTPClient(client)))
 		if formID == "" {
 			query := []string{"mimeType='application/vnd.google-apps.form'", "trashed=false"}
 			if folderID != "" {
@@ -57,50 +59,21 @@ func main() {
 			if filename != "" {
 				query = append(query, fmt.Sprintf("name contains '%s'", filename))
 			}
-			must(0, driveService.Files.List().
-				Q(strings.Join(query, " and ")).
-				SupportsAllDrives(true).                  // ★ 共有ドライブの検索に必須
-				IncludeItemsFromAllDrives(true).          // ★ 共有ドライブの検索に必須
-				Fields("nextPageToken, files(id, name)"). // ID と 名前 を取得
-				Pages(ctx, func(fileList *drive.FileList) error {
-					for _, file := range fileList.Files {
-						formFiles[file.Id] = file
-					}
-					return nil
-				}))
-			for _, file := range formFiles {
-				must(0, driveService.Permissions.List(file.Id).
-					SupportsAllDrives(true).
-					IncludePermissionsForView("published").
-					Pages(ctx, func(p *drive.PermissionList) error {
-						formFiles[file.Id].Permissions = p.Permissions
-						return nil
-					}))
-			}
+			formFiles = must(fs.Query(strings.Join(query, " and ")))
 		} else {
-			file := must(driveService.Files.Get(formID).
-				SupportsAllDrives(true).
-				IncludePermissionsForView("published").
-				Do())
-			formFiles[formID] = file
-
-			must(0, driveService.Permissions.List(file.Id).
-				SupportsAllDrives(true).
-				Pages(ctx, func(p *drive.PermissionList) error {
-					formFiles[file.Id].Permissions = p.Permissions
-					return nil
-				}))
+			file := must(fs.Info(drivefs.FileID(formID)))
+			formFiles = append(formFiles, file)
 		}
 	}
 	{
 		formsService := must(forms.NewService(ctx, option.WithHTTPClient(client)))
 		type FormInfo struct {
-			File  *drive.File
+			File  drivefs.FileInfo
 			Forms *forms.Form
 		}
 		var formInfo []FormInfo
 		for _, formFile := range formFiles {
-			form := must(formsService.Forms.Get(formFile.Id).Do())
+			form := must(formsService.Forms.Get(string(formFile.ID)).Do())
 			formInfo = append(formInfo, FormInfo{
 				File:  formFile,
 				Forms: form,

@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Jumpaku/go-drivefs"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/drive/v3"
 	"google.golang.org/api/option"
@@ -43,15 +44,7 @@ func main() {
 		drive.DriveScope,
 	))
 
-	{
-		driveService := must(drive.NewService(ctx, option.WithHTTPClient(client)))
-		copiedFile := must(driveService.Files.
-			Copy(sourceSpreadsheetID, &drive.File{
-				Name:    filename,
-				Parents: []string{destinationFolderID},
-			}).
-			SupportsAllDrives(true).
-			Do())
-		fmt.Println(copiedFile.Id)
-	}
+	fs := drivefs.New(must(drive.NewService(ctx, option.WithHTTPClient(client))))
+	copiedFile := must(fs.Copy(drivefs.FileID(destinationFolderID), drivefs.FileID(sourceSpreadsheetID), filename))
+	fmt.Println(copiedFile.ID)
 }
