@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Jumpaku/go-drivefs"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/drive/v3"
 	"google.golang.org/api/forms/v1"
@@ -44,43 +45,23 @@ func main() {
 		forms.FormsBodyScope,
 		drive.DriveScope,
 	))
-	driveService := must(drive.NewService(ctx, option.WithHTTPClient(client)))
+	fs := drivefs.New(must(drive.NewService(ctx, option.WithHTTPClient(client))))
+
 	{
-		var permissions []*drive.Permission
-		must(0, driveService.Permissions.
-			List(formId).
-			SupportsAllDrives(true).
-			Pages(ctx, func(permission *drive.PermissionList) error {
-				permissions = append(permissions, permission.Permissions...)
-				return nil
-			}))
-		for _, permission := range permissions {
-			if permission.Type == "anyone" && permission.Role == "reader" {
-				must(0, driveService.Permissions.Delete(formId, permission.Id).SupportsAllDrives(true).Do())
-			}
-			if permission.Type == "domain" && permission.Role == "reader" {
-				must(0, driveService.Permissions.Delete(formId, permission.Id).SupportsAllDrives(true).Do())
+		perms := must(fs.PermList(drivefs.FileID(formId)))
+		for _, perm := range perms {
+			switch grantee := perm.Grantee().(type) {
+			case drivefs.GranteeDomain, drivefs.GranteeAnyone:
+				must(fs.PermDel(drivefs.FileID(formId), grantee))
+				must(fs.PermDel(drivefs.FileID(formId), grantee))
 			}
 		}
-	}
-	{
 		switch access {
 		case "limited":
 		case "domain":
-			must(driveService.Permissions.Create(formId, &drive.Permission{
-				Type:   "domain",
-				Role:   "reader",
-				Domain: domain,
-			}).
-				SupportsAllDrives(true).
-				Do())
+			must(fs.PermSet(drivefs.FileID(formId), drivefs.DomainPermission(domain, drivefs.RoleReader, false)))
 		case "anyone":
-			must(driveService.Permissions.Create(formId, &drive.Permission{
-				Type: "anyone",
-				Role: "reader",
-			}).
-				SupportsAllDrives(true).
-				Do())
+			must(fs.PermSet(drivefs.FileID(formId), drivefs.AnyonePermission(drivefs.RoleReader, false)))
 		}
 	}
 	{
