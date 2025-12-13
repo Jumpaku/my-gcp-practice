@@ -23,12 +23,10 @@ func must[T any](v T, err error) T {
 	return v
 }
 func main() {
-	// --- 1. Handle command-line arguments ---
 	var folderID, filename, formID string
 	flag.StringVar(&folderID, "folder", "", "Target shared drive folder ID")
 	flag.StringVar(&filename, "filename", "", "Filename of the form created by service account (for shared drive storage)")
 	flag.StringVar(&formID, "form", "", "Target Form ID")
-
 	flag.Parse()
 	if folderID == "" && formID == "" {
 		flag.Usage()
@@ -39,14 +37,11 @@ func main() {
 	}
 
 	ctx := context.Background()
-
-	// --- 2. Authentication (ADC) ---
 	client := must(google.DefaultClient(ctx,
 		drive.DriveReadonlyScope,
 		forms.FormsBodyReadonlyScope,
 		forms.FormsResponsesReadonlyScope,
 	))
-
 	fs := drivefs.New(must(drive.NewService(ctx, option.WithHTTPClient(client))))
 
 	formFiles := []drivefs.FileInfo{}
@@ -61,8 +56,7 @@ func main() {
 			}
 			formFiles = must(fs.Query(strings.Join(query, " and ")))
 		} else {
-			file := must(fs.Info(drivefs.FileID(formID)))
-			formFiles = append(formFiles, file)
+			formFiles = []drivefs.FileInfo{must(fs.Info(drivefs.FileID(formID)))}
 		}
 	}
 	{

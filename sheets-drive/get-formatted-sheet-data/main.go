@@ -24,7 +24,6 @@ func must[T any](v T, err error) T {
 func main() {
 	var spreadsheetID string
 	flag.StringVar(&spreadsheetID, "spreadsheet", "", "ID of the spreadsheet (Required)")
-
 	flag.Parse()
 	if spreadsheetID == "" {
 		flag.Usage()
@@ -35,47 +34,44 @@ func main() {
 	}
 
 	ctx := context.Background()
-
 	client := must(google.DefaultClient(ctx,
 		sheets.SpreadsheetsScope,
 		drive.DriveScope,
 	))
-	{
-		type Sheet struct {
-			SheetId       int64
-			Title         string
-			FormattedData [][]string
-		}
-		type Spreadsheet struct {
-			SpreadsheetId string
-			Sheets        []Sheet
-		}
-		sheetsService := must(sheets.NewService(ctx, option.WithHTTPClient(client)))
-		spreadsheet := must(sheetsService.Spreadsheets.Get(spreadsheetID).IncludeGridData(true).Do())
 
-		s := Spreadsheet{SpreadsheetId: spreadsheet.SpreadsheetId}
-		for _, sheet := range spreadsheet.Sheets {
-			data := [][]string{}
-			if len(sheet.Data) == 0 {
-				continue
-			}
-			for _, r := range sheet.Data[0].RowData {
-				row := []string{}
-				for _, v := range r.Values {
-					row = append(row, v.FormattedValue)
-				}
-				data = append(data, row)
-			}
-
-			s.Sheets = append(s.Sheets, Sheet{
-				SheetId:       sheet.Properties.SheetId,
-				Title:         sheet.Properties.Title,
-				FormattedData: data,
-			})
-		}
-
-		e := json.NewEncoder(os.Stdout)
-		e.SetIndent("", "  ")
-		_ = e.Encode(s)
+	type Sheet struct {
+		SheetId       int64
+		Title         string
+		FormattedData [][]string
 	}
+	type Spreadsheet struct {
+		SpreadsheetId string
+		Sheets        []Sheet
+	}
+	sheetsService := must(sheets.NewService(ctx, option.WithHTTPClient(client)))
+	spreadsheet := must(sheetsService.Spreadsheets.Get(spreadsheetID).IncludeGridData(true).Do())
+
+	s := Spreadsheet{SpreadsheetId: spreadsheet.SpreadsheetId}
+	for _, sheet := range spreadsheet.Sheets {
+		data := [][]string{}
+		if len(sheet.Data) == 0 {
+			continue
+		}
+		for _, r := range sheet.Data[0].RowData {
+			row := []string{}
+			for _, v := range r.Values {
+				row = append(row, v.FormattedValue)
+			}
+			data = append(data, row)
+		}
+		s.Sheets = append(s.Sheets, Sheet{
+			SheetId:       sheet.Properties.SheetId,
+			Title:         sheet.Properties.Title,
+			FormattedData: data,
+		})
+	}
+
+	e := json.NewEncoder(os.Stdout)
+	e.SetIndent("", "  ")
+	_ = e.Encode(s)
 }

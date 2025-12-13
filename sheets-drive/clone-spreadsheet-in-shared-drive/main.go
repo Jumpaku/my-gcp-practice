@@ -27,7 +27,6 @@ func main() {
 	flag.StringVar(&sourceSpreadsheetID, "source", "", "ID of the source form to be copied (Required)")
 	flag.StringVar(&destinationFolderID, "destination", "", "ID of the target folder (Required)")
 	flag.StringVar(&filename, "filename", "", "New name for the copied form (Required)")
-
 	flag.Parse()
 	if sourceSpreadsheetID == "" || destinationFolderID == "" || filename == "" {
 		flag.Usage()
@@ -38,7 +37,6 @@ func main() {
 	}
 
 	ctx := context.Background()
-
 	client := must(google.DefaultClient(ctx,
 		sheets.SpreadsheetsScope,
 		drive.DriveScope,
