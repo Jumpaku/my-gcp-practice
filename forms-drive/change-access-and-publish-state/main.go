@@ -40,7 +40,6 @@ func main() {
 	}
 
 	ctx := context.Background()
-
 	client := must(google.DefaultClient(ctx,
 		forms.FormsBodyScope,
 		drive.DriveScope,
@@ -52,7 +51,6 @@ func main() {
 		for _, perm := range perms {
 			switch grantee := perm.Grantee().(type) {
 			case drivefs.GranteeDomain, drivefs.GranteeAnyone:
-				must(fs.PermDel(drivefs.FileID(formId), grantee))
 				must(fs.PermDel(drivefs.FileID(formId), grantee))
 			}
 		}

@@ -28,7 +28,6 @@ func main() {
 	var sheetID int64
 	flag.StringVar(&spreadsheetID, "spreadsheet", "", "ID of the spreadsheet (Required)")
 	flag.Int64Var(&sheetID, "sheet", 0, "ID of the sheet in the spreadsheet (Required)")
-
 	flag.Parse()
 	if spreadsheetID == "" || sheetID == 0 {
 		flag.Usage()
