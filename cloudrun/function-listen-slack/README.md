@@ -46,6 +46,6 @@ Cloud Logging entry
 
 ```json
 {
-  "textPayload": "2025/12/27 22:44:34 Verified Event received: {\"type\":\"app_mention\",\"ts\":\"1766875472.167609\",\"text\":\"<@U0A5WTJ6Z6G>\",\"channel\":\"C0A5WTMKWG4\", ...}"
+  "textPayload": "2025/12/27 22:44:34 Verified Event received: {\"type\":\"app_mention\",\"user\":\"UAWLMC8LA\",\"ts\":\"1766875472.167609\",\"text\":\"<@U0A5WTJ6Z6G>\",\"channel\":\"C0A5WTMKWG4\", ...}"
 }
 ```

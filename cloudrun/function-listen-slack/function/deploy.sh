@@ -2,11 +2,30 @@
 
 set -eux
 
-PROJECT_ID="my-gcp-practice"
-REGION="asia-northeast1"
-SERVICE="function-listen-slack"
-SERVICE_ACCOUNT='cloud-run-worker@my-gcp-practice.iam.gserviceaccount.com'
-SLACKAPP_SIGNING_SECRET=SLACKAPP_DEMO_SIGNING_SECRET
+if [ "${PROJECT_ID}" = "" ]; then
+  echo "Please set PROJECT_ID"
+  exit 1
+fi
+
+if [ "${REGION}" = "" ]; then
+  echo "Please set REGION"
+  exit 1
+fi
+
+if [ "${SERVICE}" = "" ]; then
+  echo "Please set SERVICE"
+  exit 1
+fi
+
+if [ "${SERVICE_ACCOUNT}" = "" ]; then
+  echo "Please set SERVICE_ACCOUNT"
+  exit 1
+fi
+
+if [ "${SLACKAPP_SIGNING_SECRET}" = "" ]; then
+  echo "Please set SLACKAPP_SIGNING_SECRET"
+  exit 1
+fi
 
 gcloud functions deploy "${SERVICE}" \
   --project "${PROJECT_ID}" \
