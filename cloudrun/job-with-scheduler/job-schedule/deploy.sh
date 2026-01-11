@@ -33,7 +33,7 @@ gcloud run deploy "${SERVICE}" \
   --image=us-docker.pkg.dev/cloudrun/container/hello \
   --memory=128Mi \
   --cpu=1 \
-  --allow-unauthenticated
+  --no-allow-unauthenticated
 
 gcloud run jobs deploy "${JOB}" \
   --project "${PROJECT_ID}" \
