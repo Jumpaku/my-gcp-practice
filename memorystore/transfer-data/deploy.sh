@@ -12,6 +12,12 @@ if [ "${REGION}" = "" ]; then
   exit 1
 fi
 
+
+if [ "${GCS_BUCKET}" = "" ]; then
+  echo "Please set GCS_BUCKET"
+  exit 1
+fi
+
 gcloud compute networks describe vpc-memorystore-transfer-data --project="${PROJECT_ID}" || \
   gcloud compute networks create vpc-memorystore-transfer-data \
     --project="${PROJECT_ID}" \
@@ -43,24 +49,28 @@ gcloud storage buckets describe "gs://${GCS_BUCKET}" \
     --uniform-bucket-level-access
 
 
-gcloud redis instances describe redis-memorystore-transfer-data --project="${PROJECT_ID}" --region="${REGION}" || \
-  gcloud redis instances create redis-memorystore-transfer-data \
-    --project="${PROJECT_ID}" \
-    --region="${REGION}" \
-    --network="projects/${PROJECT_ID}/global/networks/vpc-memorystore-transfer-data" \
-    --connect-mode=DIRECT_PEERING \
-    --tier=basic \
-    --size=1 \
-    --redis-version=redis_7_2
+gcloud storage cp data/sample-data-dump.rdb "gs://${GCS_BUCKET}"
 
 
-gcloud memorystore instances describe valkey-memorystore-transfer-data --project="${PROJECT_ID}" --location="${REGION}" || \
-  gcloud memorystore instances create valkey-memorystore-transfer-data \
-    --project="${PROJECT_ID}" \
-    --location="${REGION}" \
-    --endpoints=connections="[{pscAutoConnection={network=projects/${PROJECT_ID}/global/networks/vpc-memorystore-transfer-data,port=6379,projectId=${PROJECT_ID}}}]" \
-    --shard-count=1 \
-    --node-type=standard-small \
-    --replica-count=0 \
-    --engine-version=VALKEY_8_0
+#gcloud redis instances describe redis-memorystore-transfer-data --project="${PROJECT_ID}" --region="${REGION}" || \
+#  gcloud redis instances create redis-memorystore-transfer-data \
+#    --project="${PROJECT_ID}" \
+#    --region="${REGION}" \
+#    --network="projects/${PROJECT_ID}/global/networks/vpc-memorystore-transfer-data" \
+#    --connect-mode=DIRECT_PEERING \
+#    --tier=basic \
+#    --size=1 \
+#    --redis-version=redis_7_2
+#
+#
+#gcloud memorystore instances describe valkey-memorystore-transfer-data --project="${PROJECT_ID}" --location="${REGION}" || \
+#  gcloud memorystore instances create valkey-memorystore-transfer-data \
+#    --project="${PROJECT_ID}" \
+#    --location="${REGION}" \
+#    --endpoints=connections="[{pscAutoConnection={network=projects/${PROJECT_ID}/global/networks/vpc-memorystore-transfer-data,port=6379,projectId=${PROJECT_ID}}}]" \
+#    --shard-count=1 \
+#    --node-type=standard-small \
+#    --replica-count=0 \
+#    --engine-version=VALKEY_8_0 \
+#    --gcs-source-uris="gs://storage_my-gcp-practice_memorystore-transfer-data/sample-data-dump.rdb"
 
