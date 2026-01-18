@@ -1,0 +1,29 @@
+SET user:1001:name "Alice Johnson"
+SET user:1002:name "Bob Smith"
+SET user:1003:name "Carol Davis"
+SET product:2001:price "1299.99"
+SET product:2002:price "599.50"
+SET session:abc123 "user_data_here"
+SET counter:views "10542"
+SET config:max_connections "100"
+
+ZADD leaderboard:score 1500 "player1"
+ZADD leaderboard:score 2300 "player2"
+ZADD leaderboard:score 1800 "player3"
+ZADD leaderboard:score 2100 "player4"
+ZADD leaderboard:score 950 "player5"
+
+ZADD tasks:priority 10 "task_urgent"
+ZADD tasks:priority 5 "task_normal"
+ZADD tasks:priority 1 "task_low"
+ZADD tasks:priority 15 "task_critical"
+
+ZADD products:popularity 5432 "product_A"
+ZADD products:popularity 8721 "product_B"
+ZADD products:popularity 3210 "product_C"
+ZADD products:popularity 9876 "product_D"
+
+ZADD events:timestamp 1704067200 "event_jan"
+ZADD events:timestamp 1706745600 "event_feb"
+ZADD events:timestamp 1709251200 "event_mar"
+
