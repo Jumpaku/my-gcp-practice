@@ -2,17 +2,17 @@
 
 set -eux
 
-if [ "${PROJECT_ID}" = "" ]; then
+if [ -z "${PROJECT_ID}" ]; then
   echo "Please set PROJECT_ID"
   exit 1
 fi
 
-if [ "${REGION}" = "" ]; then
+if [ -z "${REGION}" ]; then
   echo "Please set REGION"
   exit 1
 fi
 
-if [ "${GCS_BUCKET}" = "" ]; then
+if [ -z "${GCS_BUCKET}" ]; then
   echo "Please set GCS_BUCKET"
   exit 1
 fi
