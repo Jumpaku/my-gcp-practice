@@ -2,12 +2,12 @@
 
 set -eux
 
-if [ "${PROJECT_ID}" = "" ]; then
+if [ -z "${PROJECT_ID}" ]; then
   echo "Please set PROJECT_ID"
   exit 1
 fi
 
-if [ "${REGION}" = "" ]; then
+if [ -z "${REGION}" ]; then
   echo "Please set REGION"
   exit 1
 fi
