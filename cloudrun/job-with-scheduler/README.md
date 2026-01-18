@@ -25,10 +25,9 @@ This sample describes an architecture where Cloud Scheduler periodically trigger
 3. **Configure Cloud Scheduler**
 
 
-Use the script in the `job-with-scheduler/job-schedule/` directory to prepare the above.
-
+Use the `deploy.sh` script in the `job-schedule` directory to create and configure the above resources.
 ```sh
-cd cloudrun/job-with-scheduler/job-schedule
+cd ./job-schedule
 ./deploy.sh
 ```
 

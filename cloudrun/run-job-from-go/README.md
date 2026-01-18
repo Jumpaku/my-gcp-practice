@@ -10,10 +10,10 @@ This sample shows how to start a Cloud Run Job from a Go client.
 
 ## GCP resources to prepare
 
-Deploy the sample job from the `run-job-from-go/job/` directory.
+Deploy the sample job from the `job/` directory.
 
 ```sh
-cd cloudrun/run-job-from-go/job
+cd ./job
 ./deploy.sh
 ```
 
