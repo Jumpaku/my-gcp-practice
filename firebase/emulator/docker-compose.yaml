@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  firebase-emulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: firebase-emulator
+    ports:
+      # Emulator UI
+      - "4000:4000"
+      # Firestore
+      - "8080:8080"
+      # Auth
+      - "9099:9099"
+      # Realtime Database
+      - "9000:9000"
+      # Functions
+      - "5001:5001"
+      # Pub/Sub
+      - "8085:8085"
+      # Storage
+      - "9199:9199"
+      # Hosting
+      - "5000:5000"
+    volumes:
+      # プロジェクトの firebase 設定ファイルをコンテナに共有
+      - ./firebase.json:/usr/src/app/firebase.json:ro
+      - ./firestore.rules:/usr/src/app/firestore.rules:ro
+      - ./firestore.indexes.json:/usr/src/app/firestore.indexes.json:ro
+      - ./storage.rules:/usr/src/app/storage.rules:ro
+      # エミュレータのデータ永続化
+      - ./data:/data
+    environment:
+      # 必要に応じてプロジェクト ID を上書き
+      - FIREBASE_PROJECT_ID=demo-project
+    command: [
+      "firebase", "emulators:start",
+      "--project", "${FIREBASE_PROJECT_ID:-demo-project}",
+      "--import", "/data",
+      "--export-on-exit", "/data"
+    ]
+
