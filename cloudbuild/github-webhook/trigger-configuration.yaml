@@ -1,0 +1,13 @@
+steps:
+  - name: ubuntu
+    args:
+      - echo
+      - hello world
+  - name: ubuntu
+    args:
+      - sh
+      - '-c'
+      - env | sort
+options:
+  logging: CLOUD_LOGGING_ONLY
+  automapSubstitutions: true
